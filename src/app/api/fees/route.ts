@@ -1,0 +1,29 @@
+import { connectDB } from "@/app/utils/database";
+import { NextResponse } from "next/server";
+import Fee from "@/app/models/fee";
+import { NextRequest } from "next/server";
+
+export async function POST(req: NextRequest) {
+  try {
+    const { userName, userEmail, totalFee, submitFee, balanceFee,course } = await req.json();
+
+    await connectDB(); // ✅ Make sure to await the DB connection
+
+    const newFee = new Fee({
+      userName,
+      userEmail,
+      course,
+      totalFee,
+      submitFee,
+      balanceFee
+    });
+
+    await newFee.save(); // ✅ Actually save the fee record
+
+    return NextResponse.json({ message: "Fee record created successfully", fee: newFee }, { status: 201 });
+
+  } catch (error) {
+    console.error("Error creating fee:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}
