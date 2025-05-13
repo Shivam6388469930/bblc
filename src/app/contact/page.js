@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image';
 
 export default function Page() {
     const [name, setName] = useState("");
@@ -34,9 +35,21 @@ export default function Page() {
     };
 
     return (
-        <div className="bg-gray-50 mt-16">
+        <div className="bg-gray-50  ">
+             <div className="w-full h-[300px] relative">
+                    <Image
+                      src="/heroimg/pexels-pixabay-159775.jpg"
+                      alt="Facilities Banner"
+                      layout="fill"
+                      objectFit="cover"
+                      className="absolute inset-0 mt-20 "
+                    />
+                    <div className="absolute inset-0 bg-black/50 flex justify-center items-center text-white text-4xl font-extrabold">
+                      <h1>Our Facilities</h1>
+                    </div>
+                  </div>
             {/* Divs Section */}
-            <div className="container mx-auto px-6 py-12">
+            <div className="container mx-auto px-6 py-12 mt-20">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="p-6 bg-blue-500 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl">
                         <h3 className="text-2xl font-semibold text-white mb-4 text-center">Email</h3>
@@ -54,7 +67,7 @@ export default function Page() {
             </div>
 
             {/* Form and Map Section */}
-            <div className="container mx-auto px-6 py-12">
+            <div className="container mx-auto px-6 py-12 bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-20">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     {/* Left side: Form */}
                     <div className="p-6 bg-white rounded-lg shadow-lg border border-gray-300">

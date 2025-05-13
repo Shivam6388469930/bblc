@@ -8,29 +8,32 @@ const feeSchema = new Schema({
   userEmail: {
     type: String,
     required: true,
+    match: [/.+@.+\..+/, 'Please enter a valid email address'],
   },
   course: {
     type: String,
     required: true,
   },
-  totalFee: {
+  registrationFee: {
     type: Number,
     required: true,
-    default: 0,
+   
   },
-  submitFee: {
-    type: Number,
-    required: true,
-    default: 0,
+  paymentStatus: {
+    type: String,
+    enum: ['Paid', 'Pending', 'Failed'],
+    default: 'Pending',
   },
-  balanceFee: {
-    type: Number,
+  order_id: {
+    type: String,
     required: true,
-    default: 0,
+  },
+  razorpay_payment_id: {
+    type: String,
+    required: true,
   },
 }, { timestamps: true });
 
-// ✅ Avoid model overwrite issue in development
 const Fee = mongoose.models.Fee || mongoose.model('Fee', feeSchema);
 
 export default Fee;

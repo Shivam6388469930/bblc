@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
 const attendanceSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    userName: {
+        type: String,
+        required: true,
+    },
+    userEmail: {
+        type: String,
         required: true,
     },
     date: {
@@ -11,14 +14,12 @@ const attendanceSchema = new mongoose.Schema({
         required: true,
         default: Date.now,
     },
-    submitFee: {
-        type: Number,
-        default: 0,
-    },
-    balanceFee: {
-        type: Number,
-        default: 0,
-    },
+    value:{
+        type: String,
+        required: true,
+        enum: ['present', 'absent'],
+        default: 'absent',
+    }
 }, { timestamps: true });
 
 // Prevent duplicate attendance for same day

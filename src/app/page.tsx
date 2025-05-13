@@ -86,14 +86,7 @@ export default function HomePage() {
             <p className="text-sm text-gray-500 mb-4">
               Start your day with our Morning Batch, designed for those who like to get a jump on their day. Ideal for early risers or individuals with busy afternoons, this batch offers a quiet and focused study time to set a productive tone for the rest of the day.
             </p>
-            <div className="flex justify-center gap-4 mt-4">
-              <button className="px-6 py-3 bg-yellow-400 text-black font-bold text-lg rounded-full hover:bg-blue-400 transition-all duration-300 transform hover:scale-105">
-                Join Now
-              </button>
-              <button className="px-6 py-3 bg-blue-500 text-white font-bold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                More Info
-              </button>
-            </div>
+           
           </div>
 
           {/* Card 2 - Noon Batch */}
@@ -103,14 +96,6 @@ export default function HomePage() {
             <p className="text-sm text-gray-500 mb-4">
               The Noon Batch is perfect for those who prefer a midday session. With ample time to rest in the morning, this batch is designed for a more relaxed yet productive atmosphere, allowing you to study during the quieter part of the day.
             </p>
-            <div className="flex justify-center gap-4 mt-4">
-              <button className="px-6 py-3 bg-yellow-400 text-black font-bold text-lg rounded-full hover:bg-blue-400 transition-all duration-300 transform hover:scale-105">
-                Join Now
-              </button>
-              <button className="px-6 py-3 bg-blue-500 text-white font-bold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                More Info
-              </button>
-            </div>
           </div>
 
           {/* Card 3 - Evening Batch */}
@@ -120,14 +105,7 @@ export default function HomePage() {
             <p className="text-sm text-gray-500 mb-4">
               Our Evening Batch caters to those with flexible schedules who want to make the most of their evenings. Whether you're working during the day or prefer a calm evening study environment, this batch offers a peaceful, focused session.
             </p>
-            <div className="flex justify-center gap-4 mt-4">
-              <button className="px-6 py-3 bg-yellow-400 text-black font-bold text-lg rounded-full hover:bg-blue-400 transition-all duration-300 transform hover:scale-105">
-                Join Now
-              </button>
-              <button className="px-6 py-3 bg-blue-500 text-white font-bold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                More Info
-              </button>
-            </div>
+           
           </div>
 
           {/* Card 4 - Night Batch */}
@@ -137,14 +115,7 @@ export default function HomePage() {
             <p className="text-sm text-gray-500 mb-4">
               Our Night Batch is designed for night owls and those who need flexibility after a long day. This batch provides a quiet and conducive environment for those who find it easier to focus during the late hours of the night.
             </p>
-            <div className="flex justify-center gap-4 mt-4">
-              <button className="px-6 py-3 bg-yellow-400 text-black font-bold text-lg rounded-full hover:bg-blue-400 transition-all duration-300 transform hover:scale-105">
-                Join Now
-              </button>
-              <button className="px-6 py-3 bg-blue-500 text-white font-bold text-lg rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                More Info
-              </button>
-            </div>
+           
           </div>
         </div>
       </div>
