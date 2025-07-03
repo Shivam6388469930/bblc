@@ -18,7 +18,8 @@ const navigation = [
   { name: "About", href: "/about" },
   { name: "Service", href: "/service" },
   { name: "Contact", href: "/contact" },
-  { name: "Fees", href: "/fees" },
+  { name: "Pay Fees", href: "/unified-payment" },
+  { name: "Attendance", href: "/attendance" },
 ];
 
 function classNames(...classes: string[]) {
@@ -161,7 +162,20 @@ export default function Navbar() {
                                   "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200"
                                 )}
                               >
-                                Transaction History
+                                Registration History
+                              </a>
+                            )}
+                          </MenuItem>
+                          <MenuItem>
+                            {({ active }) => (
+                              <a
+                                href="/monthly-history"
+                                className={classNames(
+                                  active ? "bg-gray-100 dark:bg-gray-700" : "",
+                                  "block px-4 py-2 text-sm text-gray-700 dark:text-gray-200"
+                                )}
+                              >
+                                Monthly Fee History
                               </a>
                             )}
                           </MenuItem>

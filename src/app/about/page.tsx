@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function Page() {
   return (
-    <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-20">
+    <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-1">
        <div className="w-full h-[300px] relative">
                           <Image
                             src="/heroimg/pexels-pixabay-159775.jpg"
@@ -14,14 +14,14 @@ export default function Page() {
                             className="absolute inset-0 mt-20 "
                           />
                           <div className="absolute inset-0 bg-black/50 flex justify-center items-center text-white text-4xl font-extrabold">
-                            <h1>Our Facilities</h1>
+                            <h1 className='  text-center'>Our Mission to provide a comfortable place to Study <br></br>and focus on your Growth</h1>
                           </div>
                         </div>
 
       <div className="container mx-auto px-6 py-16">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold mb-4">About Us</h1>
+          <h1 className="text-4xl font-extrabold mb-4 mt-5">About Us</h1>
           <p className="text-lg max-w-2xl mx-auto">
             Welcome to BBLC – Baba Bamokhar Library Centre. We are a community-driven space designed to foster productivity, learning, and personal growth. Whether you are preparing for exams or simply in need of a peaceful environment to read and study, we offer the perfect setting for all your needs.
           </p>
@@ -62,7 +62,7 @@ export default function Page() {
         {/* Team Section */}
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-6">Meet Our Team</h2>
-          <div className="flex justify-center gap-12">
+          <div className="flex justify-center items-center flex-col gap-12 md:flex-row ">
             <div className="bg-white rounded-lg shadow-lg p-6 w-64">
               <img src="/team1.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold">John Doe</h3>

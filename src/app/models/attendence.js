@@ -22,8 +22,9 @@ const attendanceSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Prevent duplicate attendance for same day
-attendanceSchema.index({ user: 1, date: 1 }, { unique: true });
+// Prevent duplicate attendance for same user on same day
+attendanceSchema.index({ userEmail: 1, date: 1 }, { unique: true });
 
-const Attendance = mongoose.model('Attendance', attendanceSchema);
+// Safe model export to avoid overwrite error
+const Attendance = mongoose.models.Attendance || mongoose.model('Attendance', attendanceSchema);
 export default Attendance;

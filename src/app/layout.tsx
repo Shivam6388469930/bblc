@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
+// Import Geist fonts from Google Fonts directly
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navber from "./component/Navber";
 import Footer from "./component/Footer";
 
-
+// Use Google Fonts with preload disabled to avoid Turbopack issues
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  variable: "--font-geist-sans",
+  preload: false, // Disable preloading to avoid Turbopack issues
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
+  preload: false, // Disable preloading to avoid Turbopack issues
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -28,10 +33,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <Navber />
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
