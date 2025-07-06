@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 // Import Geist fonts from Google Fonts directly
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navber from "./component/Navber";
-import Footer from "./component/Footer";
+
+import NavbarWrapper from "./component/NavbarWrapper";
+import FooterWrapper from "./component/FooterWrapper";
+
 
 // Use Google Fonts with preload disabled to avoid Turbopack issues
 const geistSans = Geist({
@@ -35,11 +37,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        <Navber />
+        {/* Only show Navbar if not in /admin route (client-side check) */}
+        <NavbarWrapper />
         <main className="flex-grow">
           {children}
         </main>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

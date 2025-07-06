@@ -76,26 +76,29 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const userEmail = searchParams.get("userEmail");
+    const isAdmin = searchParams.get("isAdmin") === "true";
     const activeOnly = searchParams.get("activeOnly") === "true";
 
-    if (!userEmail) {
-      return createErrorResponse("User email is required", 400);
+    let query: any = {};
+    if (isAdmin) {
+      // Admin: get all monthly payments, optionally filter by userEmail
+      if (userEmail) query.userEmail = userEmail;
+    } else {
+      // User: must provide userEmail
+      if (!userEmail) {
+        return createErrorResponse("User email is required", 400);
+      }
+      query = { userEmail };
     }
-
-    // Build query based on parameters
-    const query: any = { userEmail };
     if (activeOnly) {
       query.isActive = true;
     }
 
     const paymentHistory = await MonthlyFee.find(query).sort({ createdAt: -1 });
 
-    if (!paymentHistory || paymentHistory.length === 0) {
-      return createErrorResponse("No monthly payment history found", 404);
-    }
-
+    // Always return 200, even if no data
     return NextResponse.json(
-      { message: "Monthly payment history retrieved", data: paymentHistory },
+      { message: paymentHistory.length ? "Monthly payment history retrieved" : "No monthly payment history found", data: paymentHistory },
       { status: 200 }
     );
   } catch (error: any) {

@@ -169,7 +169,7 @@ export default function Page() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4 mt-10 bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-20 ">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-3xl font-bold text-center mb-2 text-blue-700">Fee Registration</h2>
-        <p className="text-center text-gray-600 mb-6">
+        <p className="text-center text-gray-600 mb-6 ">
           Fill in your details below and pay securely via Razorpay to register for your selected course.
         </p>
 

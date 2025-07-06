@@ -150,7 +150,9 @@ export default function MonthlyHistoryPage() {
             {payments.map((payment) => (
               <div key={payment._id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className={`p-4 text-white ${payment.isActive ? 'bg-green-600' : 'bg-gray-600'}`}>
-                  <h3 className="text-xl font-bold">{payment.plan} Plan</h3>
+                  <h3 className="text-xl font-bold">
+                    {payment.batch ? `${payment.batch} (${payment.plan} Plan)` : payment.plan + ' Plan'}
+                  </h3>
                   <p>{payment.isActive ? 'Active Subscription' : 'Expired Subscription'}</p>
                 </div>
 

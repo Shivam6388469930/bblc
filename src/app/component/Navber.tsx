@@ -88,20 +88,26 @@ export default function Navbar() {
 
                 {/* Desktop Navigation */}
                 <div className="hidden sm:flex justify-center space-x-8">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        pathname.startsWith(item.href)
-                          ? "text-indigo-600 font-semibold"
-                          : "text-gray-600 hover:text-indigo-600",
-                        "text-lg"
-                      )}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+                  {navigation.map((item) => {
+                    const isActive =
+                      item.href === "/"
+                        ? pathname === "/"
+                        : pathname === item.href || pathname.startsWith(item.href + "/");
+                    return (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className={classNames(
+                          isActive
+                            ? "text-indigo-600 font-semibold"
+                            : "text-gray-600 hover:text-indigo-600",
+                          "text-lg"
+                        )}
+                      >
+                        {item.name}
+                      </a>
+                    );
+                  })}
                 </div>
 
                 {/* User Menu */}
@@ -217,21 +223,27 @@ export default function Navbar() {
           {/* Mobile Navigation */}
           <DisclosurePanel className="sm:hidden transition-all duration-300 ease-in-out">
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <DisclosureButton
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    pathname.startsWith(item.href)
-                      ? "bg-gray-200 text-indigo-700 font-semibold"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
-                    "block rounded-md px-3 py-2 text-base"
-                  )}
-                >
-                  {item.name}
-                </DisclosureButton>
-              ))}
+              {navigation.map((item) => {
+                const isActive =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname === item.href || pathname.startsWith(item.href + "/");
+                return (
+                  <DisclosureButton
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      isActive
+                        ? "bg-gray-200 text-indigo-700 font-semibold"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
+                      "block rounded-md px-3 py-2 text-base"
+                    )}
+                  >
+                    {item.name}
+                  </DisclosureButton>
+                );
+              })}
             </div>
           </DisclosurePanel>
         </>

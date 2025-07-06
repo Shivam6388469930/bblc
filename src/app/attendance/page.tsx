@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface AttendanceRecord {
   _id: string;
@@ -21,12 +22,16 @@ export default function StudentAttendancePage() {
   const [endDate, setEndDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const router = useRouter();
 
   useEffect(() => {
     // Get user info from localStorage
     const email = localStorage.getItem('userEmail');
     const name = localStorage.getItem('userName');
-
+    if (!name) {
+      router.replace('/login');
+      return;
+    }
     if (email) {
       setUserEmail(email);
       setUserName(name || '');
@@ -157,7 +162,7 @@ export default function StudentAttendancePage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 mt-20">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome, {userName}!</h2>
           <p className="text-gray-600">Track your attendance and view your progress</p>

@@ -14,63 +14,16 @@ export default function AdminMonthlyFeesPage() {
   useEffect(() => {
     async function fetchAllMonthlyPayments() {
       try {
-        // In a real implementation, this would be a special admin API endpoint
-        // For now, we'll use the same endpoint but would need proper admin authentication
-        const res = await fetch(`/api/monthly-payment?userEmail=admin@bblc.com&isAdmin=true`);
+        const res = await fetch(`/api/monthly-payment?isAdmin=true`);
         const data = await res.json();
 
         if (!res.ok) {
           throw new Error(data.message || 'Failed to fetch payment data');
         }
 
-        // Mock data for demonstration since we don't have an admin API yet
-        const mockPayments = [
-          {
-            _id: '1',
-            userName: 'John Doe',
-            userEmail: 'john@example.com',
-            plan: 'Premium',
-            amount: 1200,
-            startDate: new Date('2023-05-01'),
-            endDate: new Date('2023-06-01'),
-            paymentStatus: 'Paid',
-            isActive: false,
-            order_id: 'order_123456',
-            razorpay_payment_id: 'pay_123456',
-            createdAt: new Date('2023-05-01')
-          },
-          {
-            _id: '2',
-            userName: 'Jane Smith',
-            userEmail: 'jane@example.com',
-            plan: 'Standard',
-            amount: 800,
-            startDate: new Date(),
-            endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-            paymentStatus: 'Paid',
-            isActive: true,
-            order_id: 'order_789012',
-            razorpay_payment_id: 'pay_789012',
-            createdAt: new Date()
-          },
-          {
-            _id: '3',
-            userName: 'Bob Johnson',
-            userEmail: 'bob@example.com',
-            plan: 'Basic',
-            amount: 500,
-            startDate: new Date(),
-            endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-            paymentStatus: 'Paid',
-            isActive: true,
-            order_id: 'order_345678',
-            razorpay_payment_id: 'pay_345678',
-            createdAt: new Date()
-          }
-        ];
-
-        setPayments(mockPayments);
-        setFilteredPayments(mockPayments);
+        // Use real API data
+        setPayments(data.data || []);
+        setFilteredPayments(data.data || []);
       } catch (err: any) {
         console.error('Error fetching payments:', err);
         setError(err.message || 'An error occurred');
@@ -179,7 +132,7 @@ export default function AdminMonthlyFeesPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Monthly Fee Management</h1>
+      <h1 className="text-2xl font-bold mb-6 text-blue-500">Financial Management</h1>
       
       {/* Search and Filter Controls */}
       <div className="bg-white p-4 rounded-lg shadow mb-6">
@@ -239,7 +192,7 @@ export default function AdminMonthlyFeesPage() {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Period</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th> */}
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -266,11 +219,11 @@ export default function AdminMonthlyFeesPage() {
                           {new Date(payment.startDate).toLocaleDateString('en-IN')} to {new Date(payment.endDate).toLocaleDateString('en-IN')}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${payment.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                           {payment.isActive ? 'Active' : 'Expired'}
                         </span>
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button
                           onClick={() => generatePDF(payment)}

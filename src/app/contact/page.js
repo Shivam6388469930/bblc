@@ -1,13 +1,22 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [status, setStatus] = useState("");
+    const router = useRouter();
+
+    useEffect(() => {
+        const name = localStorage.getItem('userName');
+        if (!name) {
+            router.replace('/login');
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

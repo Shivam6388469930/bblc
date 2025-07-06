@@ -60,8 +60,7 @@ export default function Page() {
                         </div>
                     </div>
 
-                    {/* Team Section */}
-                    <div className="text-center mt-3 mb-3 p-8 rounded-lg shadow-lg">
+                    <div className="text-center bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-3 mb-3 p-8 rounded-lg shadow-lg">
                         <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-6 pt-6">Batch Timing</h1>
 
                         {/* Grid Container */}
@@ -73,7 +72,14 @@ export default function Page() {
                                 <p className="text-sm text-gray-500 mb-4">
                                     Start your day with our Morning Batch, designed for those who like to get a jump on their day. Ideal for early risers or individuals with busy afternoons, this batch offers a quiet and focused study time to set a productive tone for the rest of the day.
                                 </p>
-                               
+                                <button
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    onClick={() => {
+                                        window.location.href = '/unified-payment?batch=Morning%20Batch&plan=Monthly';
+                                    }}
+                                >
+                                    Book Now
+                                </button>
                             </div>
 
                             {/* Card 2 - Noon Batch */}
@@ -83,7 +89,14 @@ export default function Page() {
                                 <p className="text-sm text-gray-500 mb-4">
                                     The Noon Batch is perfect for those who prefer a midday session. With ample time to rest in the morning, this batch is designed for a more relaxed yet productive atmosphere, allowing you to study during the quieter part of the day.
                                 </p>
-                              
+                                <button
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    onClick={() => {
+                                        window.location.href = '/unified-payment?batch=Mid%20Morning%20Batch&plan=Monthly';
+                                    }}
+                                >
+                                    Book Now
+                                </button>
                             </div>
 
                             {/* Card 3 - Evening Batch */}
@@ -93,7 +106,14 @@ export default function Page() {
                                 <p className="text-sm text-gray-500 mb-4">
                                     Our Evening Batch caters to those with flexible schedules who want to make the most of their evenings. Whether you're working during the day or prefer a calm evening study environment, this batch offers a peaceful, focused session.
                                 </p>
-                               
+                                <button
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    onClick={() => {
+                                        window.location.href = '/unified-payment?batch=Afternoon%20Batch&plan=Monthly';
+                                    }}
+                                >
+                                    Book Now
+                                </button>
                             </div>
 
                             {/* Card 4 - Night Batch */}
@@ -103,21 +123,18 @@ export default function Page() {
                                 <p className="text-sm text-gray-500 mb-4">
                                     Our Night Batch is designed for night owls and those who need flexibility after a long day. This batch provides a quiet and conducive environment for those who find it easier to focus during the late hours of the night.
                                 </p>
-                        
+                                <button
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    onClick={() => {
+                                        window.location.href = '/unified-payment?batch=Full%20Day%20Batch&plan=Monthly';
+                                    }}
+                                >
+                                    Book Now
+                                </button>
                             </div>
                         </div>
-                        </div>
-                        {/* Call to Action Section */}
-                        <div className="bg-white text-center p-8 rounded-lg shadow-lg">
-                            <h2 className="text-3xl font-bold mb-6">Experience Our Facilities Today</h2>
-                            <p className="text-lg text-gray-600 mb-6">
-                                Join us today and experience the best facilities designed to support your academic and professional growth. We are here to provide you with everything you need for success.
-                            </p>
-                            <button className="px-6 py-3 bg-yellow-400 text-black font-bold text-lg rounded-full hover:bg-yellow-500 transition-all duration-300">
-                                Book a Tour
-                            </button>
-                        </div>
                     </div>
+                </div>
                 </div>
             </>
             );

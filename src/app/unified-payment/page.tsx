@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from "next/image";
 
 declare global {
@@ -9,6 +10,8 @@ declare global {
 }
 
 export default function UnifiedPaymentPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [formdata, setFormdata] = useState({
     userName: "",
     userEmail: "",
@@ -29,8 +32,20 @@ export default function UnifiedPaymentPage() {
   const [hasRegistrationFee, setHasRegistrationFee] = useState<boolean>(false);
   const [checkingRegistration, setCheckingRegistration] = useState<boolean>(false);
   const [isFirstTimePayment, setIsFirstTimePayment] = useState<boolean>(true);
+  const [latestPayment, setLatestPayment] = useState(null);
+  const [canPay, setCanPay] = useState(true);
+  const [planExpired, setPlanExpired] = useState(false);
 
-  // Define monthly plans with their amounts
+
+  // Define batch options and their prices
+  const batchOptions = [
+    { label: 'Morning Batch', value: 'Morning Batch', amount: 650 },
+    { label: 'Mid Morning Batch', value: 'Mid Morning Batch', amount: 800 },
+    { label: 'Afternoon Batch', value: 'Afternoon Batch', amount: 1200 },
+    { label: 'Full Day Batch', value: 'Full Day Batch', amount: 1500 },
+  ];
+
+  // Define monthly plans with their amounts (legacy, for compatibility)
   const planAmounts = {
     "Basic": 500,
     "Standard": 800,
@@ -44,22 +59,40 @@ export default function UnifiedPaymentPage() {
     "Course C": 2000,
   };
 
-  // Load user data from localStorage
+  // Load user data from localStorage and query params
   useEffect(() => {
     const userName = localStorage.getItem('userName');
     const userEmail = localStorage.getItem('userEmail');
 
-    if (userName && userEmail) {
-      setFormdata(prev => ({
-        ...prev,
-        userName,
-        userEmail
-      }));
+    // Redirect to login if user is not logged in
+    if (!userName) {
+      router.replace('/login');
+      return;
+    }
 
-      // Check if user has already paid registration fee
+    // Read batch from query params only (ignore plan param for backend compatibility)
+    const batchParam = searchParams.get('batch');
+
+    // Map batch to legacy plan name for backend compatibility
+    let plan = '';
+    if (batchParam) {
+      if (batchParam === 'Morning Batch') plan = 'Basic';
+      else if (batchParam === 'Mid Morning Batch') plan = 'Standard';
+      else if (batchParam === 'Afternoon Batch' || batchParam === 'Full Day Batch') plan = 'Premium';
+    }
+
+    setFormdata(prev => ({
+      ...prev,
+      userName: userName || '',
+      userEmail: userEmail || '',
+      course: batchParam || prev.course,
+      plan: plan || prev.plan
+    }));
+
+    if (userEmail) {
       checkRegistrationStatus(userEmail);
     }
-  }, []);
+  }, [searchParams]);
 
   // Check if user has paid registration fee
   const checkRegistrationStatus = async (userEmail: string) => {
@@ -80,10 +113,11 @@ export default function UnifiedPaymentPage() {
     }
   };
 
-  // Update total amount when plan or registration status changes
+  // Update total amount when batch or registration status changes
   useEffect(() => {
-    if (formdata.plan) {
-      const planAmount = planAmounts[formdata.plan] || 0;
+    if (formdata.course) {
+      const batch = batchOptions.find(b => b.value === formdata.course);
+      const planAmount = batch ? batch.amount : 0;
       const registrationFee = isFirstTimePayment ? 50 : 0;
       const totalAmount = planAmount + registrationFee;
 
@@ -94,7 +128,44 @@ export default function UnifiedPaymentPage() {
         totalAmount
       }));
     }
-  }, [formdata.plan, isFirstTimePayment]);
+  }, [formdata.course, isFirstTimePayment]);
+
+  // Fetch latest monthly payment for user
+  useEffect(() => {
+    const fetchLatestPayment = async () => {
+      if (!formdata.userEmail) return;
+      try {
+        const res = await fetch(`/api/monthly-payment?userEmail=${formdata.userEmail}`);
+        const data = await res.json();
+        if (res.ok && Array.isArray(data.data) && data.data.length > 0) {
+          const latest = data.data[0]; // sorted by createdAt desc in API
+          setLatestPayment(latest);
+          const now = new Date();
+          const end = new Date(latest.endDate);
+          if (latest.paymentStatus === 'Paid' && end >= now) {
+            setCanPay(false);
+            setPlanExpired(false);
+            setMessage(`You already paid the fee for this month. Next due: ${end.toLocaleDateString('en-IN')}`);
+          } else if (end < now) {
+            setCanPay(true);
+            setPlanExpired(true);
+            setMessage('Your plan has expired. Please pay the fee to renew.');
+          } else {
+            setCanPay(true);
+            setPlanExpired(false);
+          }
+        } else {
+          setCanPay(true);
+          setPlanExpired(true);
+        }
+      } catch (err) {
+        setCanPay(true);
+        setPlanExpired(false);
+      }
+    };
+    fetchLatestPayment();
+    // eslint-disable-next-line
+  }, [formdata.userEmail]);
 
   // Load Razorpay script
   const loadRazorpayScript = () => {
@@ -220,7 +291,7 @@ export default function UnifiedPaymentPage() {
         }
       }
 
-      // Save monthly fee
+      // Save monthly fee (send both plan and batch for history)
       const monthlyRes = await fetch("/api/monthly-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -228,6 +299,7 @@ export default function UnifiedPaymentPage() {
           userName: formdata.userName,
           userEmail: formdata.userEmail,
           plan: formdata.plan,
+          batch: formdata.course, // send batch name for history
           amount: formdata.planAmount,
           startDate: formdata.startDate,
           endDate: formdata.endDate,
@@ -322,14 +394,14 @@ export default function UnifiedPaymentPage() {
           alt="Payment Banner"
           layout="fill"
           objectFit="cover"
-          className="absolute inset-0 mt-20"
+          className="absolute inset-0 mt-20 mb-20"
         />
         <div className="absolute inset-0 bg-black/50 flex justify-center items-center text-white text-4xl font-extrabold">
           <h1>{isFirstTimePayment ? "Registration + Monthly Fee" : "Monthly Fee Payment"}</h1>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 mt-20">
         {/* Payment Status Info */}
         <div className={`mb-6 p-4 rounded-lg ${
           isFirstTimePayment
@@ -380,46 +452,55 @@ export default function UnifiedPaymentPage() {
               </div>
             </div>
 
-            {/* Course selection for first time users */}
-            {isFirstTimePayment && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Course (for Registration)
-                </label>
-                <select
-                  value={formdata.course}
-                  onChange={(e) => setFormdata({...formdata, course: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select Course</option>
-                  {Object.entries(courseAmounts).map(([course, amount]) => (
-                    <option key={course} value={course}>
-                      {course} (₹{amount})
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
 
-            {/* Plan selection */}
+            {/* Batch selection (always show) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Select Batch
+              </label>
+              <select
+                value={formdata.course}
+                onChange={(e) => {
+                  const selectedBatch = batchOptions.find(b => b.value === e.target.value);
+                  // Map batch to legacy plan name for backend compatibility
+                  let plan = '';
+                  if (selectedBatch) {
+                    if (selectedBatch.label === 'Morning Batch') plan = 'Basic';
+                    else if (selectedBatch.label === 'Mid Morning Batch') plan = 'Standard';
+                    else if (selectedBatch.label === 'Afternoon Batch' || selectedBatch.label === 'Full Day Batch') plan = 'Premium';
+                  }
+                  setFormdata(prev => ({
+                    ...prev,
+                    course: e.target.value,
+                    plan: plan,
+                    planAmount: selectedBatch ? selectedBatch.amount : 0
+                  }));
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Select Batch</option>
+                {batchOptions.map((batch) => (
+                  <option key={batch.value} value={batch.value}>
+                    {batch.label} (₹{batch.amount})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Plan selection (synced with batch, read-only) */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Monthly Plan
               </label>
-              <select
-                value={formdata.plan}
-                onChange={(e) => setFormdata({...formdata, plan: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <input
+                type="text"
+                value={formdata.plan ? `${formdata.plan} (₹${formdata.planAmount})` : ''}
+                readOnly
+                className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-100 focus:outline-none"
+                placeholder="Select a batch to set plan"
                 required
-              >
-                <option value="">Select Plan</option>
-                {Object.entries(planAmounts).map(([plan, amount]) => (
-                  <option key={plan} value={plan}>
-                    {plan} Plan - ₹{amount}/month
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             {/* Payment Summary */}
@@ -447,7 +528,7 @@ export default function UnifiedPaymentPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={!canPay || loading}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 font-semibold"
             >
               {loading ? "Processing..." : `Pay ₹${formdata.totalAmount}`}
@@ -461,6 +542,20 @@ export default function UnifiedPaymentPage() {
                 : 'bg-red-100 text-red-700'
             }`}>
               {message}
+            </div>
+          )}
+
+          {/* Warning message for plan expiry or payment status */}
+          {latestPayment && (
+            <div className={`mt-4 p-3 rounded ${
+              planExpired
+                ? 'bg-red-100 text-red-700'
+                : 'bg-yellow-100 text-yellow-700'
+            }`}>
+              {planExpired
+                ? "⚠️ Your plan has expired. Please pay the fee to renew."
+                : `ℹ️ You already paid the fee for this month. Next due: ${new Date(latestPayment.endDate).toLocaleDateString('en-IN')}`
+              }
             </div>
           )}
         </div>

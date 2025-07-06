@@ -170,7 +170,11 @@ export default function AllUsers() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">All Users</h2>
+      <div className='mb-6'>
+         <h2 className="text-3xl font-bold mb-4 text-blue-500">User Management</h2>
+         <h2>Manage All User That Are Registed In Your Library</h2>
+      </div>
+     
 
       {loading ? (
         <p>Loading...</p>
