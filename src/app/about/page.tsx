@@ -7,7 +7,7 @@ export default function Page() {
     <div className="bg-gradient-to-r from-blue-500 via-teal-500 to-green-500 mt-1">
        <div className="w-full h-[300px] relative">
                           <Image
-                            src="/heroimg/pexels-pixabay-159775.jpg"
+                            src="/heroImage/pexels-pixabay-159775.jpg"
                             alt="Facilities Banner"
                             layout="fill"
                             objectFit="cover"
@@ -64,17 +64,17 @@ export default function Page() {
           <h2 className="text-3xl font-bold mb-6">Meet Our Team</h2>
           <div className="flex justify-center items-center flex-col gap-12 md:flex-row ">
             <div className="bg-white rounded-lg shadow-lg p-6 w-64">
-              <img src="/team1.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
+              <Image src="/team1.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold">John Doe</h3>
               <p className="text-gray-600">Founder & CEO</p>
             </div>
             <div className="bg-white rounded-lg shadow-lg p-6 w-64">
-              <img src="/team2.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
+              <Image src="/team2.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold">Jane Smith</h3>
               <p className="text-gray-600">Operations Manager</p>
             </div>
             <div className="bg-white rounded-lg shadow-lg p-6 w-64">
-              <img src="/team3.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
+              <Image src="/team3.jpg" alt="Team Member" className="w-32 h-32 rounded-full mx-auto mb-4" />
               <h3 className="text-xl font-semibold">Mark Wilson</h3>
               <p className="text-gray-600">Community Outreach</p>
             </div>

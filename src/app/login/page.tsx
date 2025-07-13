@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+  const router=useRouter();
   const [formData, setFormData] = useState({
     userEmail: '',
     userPassword: '',
@@ -33,8 +35,11 @@ export default function LoginPage() {
         localStorage.setItem('userName', user.userName);
         localStorage.setItem('userEmail', user.userEmail); 
         localStorage.setItem('token', data.token); 
+
         setMessage(data.message);
         console.log('✅ Login successful:', data);
+        router.push('/')
+       
       } else {
         setMessage(data.message || 'Something went wrong');
         console.error('❌ Login failed:', data);
